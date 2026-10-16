@@ -1,0 +1,43 @@
+{
+  "manifest_version": 3,
+  "name": "Forms Autofill Helper",
+  "version": "0.5.0",
+  "description": "Fills web forms from your saved answers, and optionally lets AI (Gemini, with Groq and Cerebras as fallbacks) write the rest from your About me. Never submits.",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://docs.google.com/forms/*",
+    "https://generativelanguage.googleapis.com/*",
+    "https://api.groq.com/*",
+    "https://api.cerebras.ai/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "options_page": "options/options.html",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://docs.google.com/forms/*"
+      ],
+      "js": [
+        "content/selectors.js",
+        "content/safety.js",
+        "content/form-reader.js",
+        "content/generic-reader.js",
+        "content/matcher.js",
+        "content/filler.js",
+        "content/panel-css.js",
+        "content/panel.js",
+        "content/main.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_title": "Fill this page's form (right-click \u2192 Options for My answers)"
+  }
+}

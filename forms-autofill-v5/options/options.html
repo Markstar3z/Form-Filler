@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>My answers · Forms Autofill Helper</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <main>
+    <h1>My answers</h1>
+    <p class="lead">Saved only in this browser.</p>
+    <p class="warn"><strong>Don't store</strong> passwords, seed phrases, private keys, card numbers, PINs, OTPs, BVN/NIN/SSN anywhere on this page. They are blocked and never auto-filled.</p>
+
+    <h2>1. Quick answers <small>(free, local, instant)</small></h2>
+    <details>
+      <summary>How matching works</summary>
+      <ul>
+        <li><b>Keywords</b> are comma-separated phrases. If a question contains one, that row is used. Longer phrases win.</li>
+        <li>A keyword starting with <code>=</code> only matches when the whole question is exactly that (e.g. <code>=name</code>).</li>
+        <li><b>Choice questions:</b> the value must match an option's text (e.g. <code>Male</code>). For checkboxes, separate several values with <code>;</code>.</li>
+        <li><b>Dates:</b> write <code>31/12/1999</code> (day first) or <code>1999-12-31</code>.</li>
+      </ul>
+    </details>
+    <div id="rows"></div>
+    <div class="actions"><button id="add" type="button">+ Add row</button></div>
+
+    <h2>2. About me + AI <small>(optional)</small></h2>
+    <p class="lead">For questions the table above can't answer (e.g. "Why do you want to join?", "Years of experience"), AI reads this text and drafts an answer. It only runs when you press <b>Answer the rest with AI</b> in the panel, and its drafts are never ticked for you.</p>
+    <label class="block">About me
+      <textarea id="about" rows="12" placeholder="Write freely, and be specific: the AI can only write about what is here. For each area you work in (e.g. Web3, DeSci, biomedicine, community, content, partnerships) add roles, projects, results and numbers. Facts only; it is told never to invent anything that isn't here."></textarea>
+    </label>
+
+    <h3>AI providers</h3>
+    <p class="lead">Add a key for one, two or all three. The AI button tries them in order and uses the first that works, so if one is down, rate-limited, or returns rubbish, the next takes over. <b>Providers without a key are never used.</b></p>
+    <label class="block">Try first
+      <select id="primary">
+        <option value="gemini">Gemini</option>
+        <option value="groq">Groq</option>
+        <option value="cerebras">Cerebras</option>
+      </select>
+    </label>
+
+    <div class="prov">
+      <b>Gemini</b> <small>free key at aistudio.google.com</small>
+      <div class="grid2">
+        <label class="block">API key <input id="key" type="password" autocomplete="off" placeholder="AIza…"></label>
+        <label class="block">Model <input id="model" type="text" placeholder="gemini-flash-latest (default)"></label>
+      </div>
+    </div>
+    <div class="prov">
+      <b>Groq</b> <small>free key at console.groq.com/keys</small>
+      <div class="grid2">
+        <label class="block">API key <input id="groqKey" type="password" autocomplete="off" placeholder="gsk_…"></label>
+        <label class="block">Model <input id="groqModel" type="text" placeholder="llama-3.3-70b-versatile (default)"></label>
+      </div>
+    </div>
+    <div class="prov">
+      <b>Cerebras</b> <small>key at cloud.cerebras.ai (reports differ on whether a payment method must be on file to activate the free tier)</small>
+      <div class="grid2">
+        <label class="block">API key <input id="cerebrasKey" type="password" autocomplete="off" placeholder="csk-…"></label>
+        <label class="block">Model <input id="cerebrasModel" type="text" placeholder="gpt-oss-120b (default)"></label>
+      </div>
+    </div>
+
+    <div class="warn">
+      <b>Privacy catch:</b> your About me goes to <b>whichever provider answers</b>, including a fallback you forgot you set up. Each provider has its own terms. On Google's free Gemini tier, Google may use what you send to improve its products and human reviewers may read it. I couldn't verify Groq's or Cerebras's terms for free-tier data, so check them yourself, and only add a key for a provider you're comfortable sending your About me to. Keep it to what forms normally ask (background, education, experience, skills): no ID numbers or sensitive details. The quick-answer table above never leaves your browser.
+    </div>
+    <div class="info">
+      <b>What gets sent</b> only when you press the AI button: your About me plus, for the unanswered questions only, the question text, description, type and options. <b>Not sent:</b> your quick-answer table, the page's URL, anything already typed in, or questions about passwords/codes/IDs. Keys are stored unencrypted in this browser and used only by the extension's background script. The panel always tells you which provider answered, and why if a fallback was used.
+    </div>
+
+    <div class="actions">
+      <button id="save" type="button" class="primary">Save everything</button>
+      <button id="test" type="button">Test all my keys</button>
+      <span id="status" role="status"></span>
+    </div>
+  </main>
+  <script src="../shared/defaults.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>
